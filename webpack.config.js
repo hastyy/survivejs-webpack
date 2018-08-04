@@ -4,7 +4,6 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const parts = require("./webpack.parts");
 
 const commonConfig = merge([
-    parts.loadCSS(),
     {
         plugins: [
             new HtmlWebpackPlugin({
@@ -14,14 +13,28 @@ const commonConfig = merge([
     },
 ]);
 
-const productionConfig = merge([]);
+const productionConfig = merge([
+  parts.extractCSS({
+    use: [
+        "css-loader",
+        {
+            loader: "postcss-loader",
+            options: {
+                plugins: () => [require("autoprefixer")]
+            }
+        },
+        "sass-loader"
+    ]
+  })
+]);
 
 const developmentConfig = merge([
-    parts.devServer({
-        // Customize host/port here if needed
-        host: process.env.HOST,
-        port: process.env.PORT,
-    }),
+  parts.loadCSS(),
+  parts.devServer({
+    // Customize host/port here if needed
+    host: process.env.HOST,
+    port: process.env.PORT
+  })
 ]);
 
 module.exports = (mode) => {

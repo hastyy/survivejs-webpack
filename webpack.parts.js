@@ -91,3 +91,7 @@ exports.devServer = ({ host, port } = {}) => ({
         overlay: true,
     },
 });
+
+exports.generateSourceMaps = ({ type }) => ({
+    devtool: type,
+});

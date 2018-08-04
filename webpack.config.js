@@ -21,27 +21,28 @@ const commonConfig = merge([
 ]);
 
 const productionConfig = merge([
-    parts.extractCSS({
-        use: [
-            "css-loader",
-            {
-                loader: "postcss-loader",
-                options: {
-                    plugins: () => [require("autoprefixer")]
-                }
-            },
-            "sass-loader"
-        ]
-    }),
-    parts.purifyCSS({
-        paths: glob.sync(`${PATHS.app}/**/*.js`, { nodir: true }),
-    }),
-    parts.loadImages({
+  parts.generateSourceMaps({ type: "hidden-source-map" }),
+  parts.extractCSS({
+    use: [
+      "css-loader",
+      {
+        loader: "postcss-loader",
         options: {
-            limit: 15000,
-            name: "[name].[ext]",
-        },
-    }),
+          plugins: () => [require("autoprefixer")]
+        }
+      },
+      "sass-loader"
+    ]
+  }),
+  parts.purifyCSS({
+    paths: glob.sync(`${PATHS.app}/**/*.js`, { nodir: true })
+  }),
+  parts.loadImages({
+    options: {
+      limit: 15000,
+      name: "[name].[ext]"
+    }
+  })
 ]);
 
 const developmentConfig = merge([

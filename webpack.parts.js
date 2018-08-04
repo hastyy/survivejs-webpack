@@ -7,3 +7,27 @@ exports.devServer = ({ host, port } = {}) => ({
         overlay: true,
     },
 });
+
+exports.loadCSS = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        include,
+        exclude,
+
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: () => [require("autoprefixer")]
+            }
+          },
+          "sass-loader"
+        ]
+      }
+    ]
+  }
+});

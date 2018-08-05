@@ -1,5 +1,20 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const PurifyCSSPlugin = require("purifycss-webpack");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
+const webpack = require("webpack");
+const GitRevisionPlugin = require("git-revision-webpack-plugin");
+
+exports.clean = path => ({
+    plugins: [new CleanWebpackPlugin([path])],
+});
+
+exports.attachRevision = () => ({
+    plugins: [
+        new webpack.BannerPlugin({
+            banner: new GitRevisionPlugin().version(),
+        }),
+    ],
+});
 
 exports.purifyCSS = ({ paths }) => ({
     plugins: [new PurifyCSSPlugin({ paths })],

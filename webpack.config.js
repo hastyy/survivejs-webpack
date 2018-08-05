@@ -21,6 +21,11 @@ const commonConfig = merge([
 ]);
 
 const productionConfig = merge([
+  {
+    output: {
+      chunkFilename: "chunk.[id].js"
+    }
+  },
   parts.generateSourceMaps({ type: "hidden-source-map" }),
   parts.extractCSS({
     use: [
@@ -43,19 +48,19 @@ const productionConfig = merge([
       name: "[name].[ext]"
     }
   }),
-    {
-        optimization: {
-            splitChunks: {
-                cacheGroups: {
-                    commons: {
-                        test: /[\\/]node_modules[\\/]/,
-                        name: "vendor",
-                        chunks: "initial",
-                    },
-                },
-            },
-        },
-    },
+  {
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: "vendor",
+            chunks: "initial"
+          }
+        }
+      }
+    }
+  }
 ]);
 
 const developmentConfig = merge([
